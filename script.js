@@ -17,7 +17,6 @@ let videos = document.querySelector('.videos')
 let divider
 let first = false
 
-
 startBtn.addEventListener('click', function () {
     if (studyMinutes.value == '' && studyHours.value == '') {
         alert('Unesi vreme učenja!')

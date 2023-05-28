@@ -196,6 +196,8 @@ button:hover {
     .videos iframe {
         margin-left: 0;
         margin-bottom: 10px;
+        width: 240px;
+        height: 120px;
     }
     .videos iframe:nth-child(2) {
         margin-left: 0;
