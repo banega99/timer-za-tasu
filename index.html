@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Tamjer</title>
+</head>
+<body>
+    <div class="inputCont">
+        <label for="study"><h3>UCHENJE</h3></label>
+        <div id="study">
+            <label for="studyHours">SATI</label>
+            <input class="glow-on-hover" type="number" name="" id="studyHours" min="0" maxlength="2">
+            <label for="studyMinutes">MINUTI
+            </label>
+            <input class="glow-on-hover" type="number" name="" id="studyMinutes" max="60" min="1" maxlength="2">
+        </div>  
+        
+        <label for="pause"><h3>PAUZA</h3></label>
+        <div id="pause">
+            <label for="pauseMinutes">MINUTI</label>
+            <input class="glow-on-hover" type="number" name="" id="pauseMinutes" max="60" min="1" maxlength="2">
+        </div> 
+        <button class="glow-on-hover">START</button>
+    </div>
+    <div class="videos">
+        <iframe width="300" height="150" src="https://www.youtube.com/embed/VB6SIKl8Md0" title="Classical Piano Music by Mozart 🎼 Relaxing Piano Sonata for Concentration 📙 Best Study Music" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+        <iframe width="300" height="150" src="https://www.youtube.com/embed/UgHKb_7884o" title="12 HOURS of Relaxing Fireplace Sounds - Burning Fireplace &amp; Crackling Fire Sounds (NO MUSIC)" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+    </div>
+    <div class="container">
+        <div class="time"></div>
+        <div class="btns">
+            <button class="glow-on-hover" id="stopBtn">STOP</button>
+            <button class="glow-on-hover" id="pauseBtn">PAUSE</button>
+            <button class="glow-on-hover" id="playBtn">PLAY</button>
+        </div>
+    </div>
+    
+    <script src="script.js"></script>
+</body>
+</html>
