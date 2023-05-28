@@ -14,41 +14,10 @@ let studyPause = true
 let studySound = new Audio('sounds/učenje.aac')
 let pauseSound = new Audio('sounds/pauza.aac')
 let videos = document.querySelector('.videos')
+let divider
+let first = false
 
-function startTimer(studyTimeHours, time, study) {
-    container.style.display = 'flex'
-    studyPause = study
-    let spMinutes = time
-    function tick() {
-        inputCont.style.display = 'none'
-        btns.style.visibility = 'visible'
-        videos.style.visibility = 'visible'
-        let hours = String(Math.floor(spMinutes / 3600)).padStart(2, 0)
-        let minutes = study
-        if (studyPause) minutes = studyHoursValue == '' ? String(Math.floor(spMinutes / 60)).padStart(2, 0) : String(Math.floor(spMinutes / (60 * parseInt(studyHoursValue)))).padStart(2, 0)
-        else minutes = String(Math.floor(spMinutes / 60)).padStart(2, 0)
-        let seconds = String(Math.floor(spMinutes % 60)).padStart(2, 0)
-        timerLabel.textContent = study ? `${hours}:${minutes >= 60 ? String(Math.floor((spMinutes - studyTimeHours) / 60)).padStart(2, 0) : minutes}:${seconds}` : `${minutes}:${seconds}`
-        if (spMinutes === 0) {
-            clearInterval(studyTimer);
-            studyTimeHours = studyHoursValue == '' ? 0 : parseInt(studyHoursValue) * 3600
-            studyTimeMinutes = studyMinutesValue == '' ? 0 + studyTimeHours : parseInt(studyMinutesValue) * 60 + studyTimeHours
-            pauseTimeMinutes = parseInt(pauseMinutesValue) * 60
-            if (studyPause) {
-                pauseSound.play()
-                studyTimer = startTimer(0, pauseTimeMinutes, false)
-            }
-            else {
-                studySound.play()
-                studyTimer = startTimer(studyTimeHours, studyTimeMinutes, true)
-            }
-        }
-        spMinutes--
-    }
-    tick()
-    studyTimer = setInterval(tick, 1000);
-    return studyTimer
-}
+
 startBtn.addEventListener('click', function () {
     if (studyMinutes.value == '' && studyHours.value == '') {
         alert('Unesi vreme učenja!')
@@ -68,24 +37,62 @@ startBtn.addEventListener('click', function () {
     studyHours.value = ''
     studyMinutes.value = ''
     pauseMinutes.value = ''
+    function startTimer(studyTimeHours, time, study) {
+        if(!first)divider = parseInt(studyHoursValue)
+        first = true
+        container.style.display = 'flex'
+        studyPause = study
+        let spMinutes = time
+        function tick() {
+            inputCont.style.display = 'none'
+            btns.style.visibility = 'visible'
+            videos.style.visibility = 'visible'
+            let hours = String(Math.floor(spMinutes / 3600)).padStart(2, 0)
+            let minutes = study
+            if (studyPause) minutes = studyHoursValue == '' ? String(Math.floor(spMinutes / 60)).padStart(2, 0) : String(Math.floor(spMinutes / (60 * divider))).padStart(2, 0)
+            else minutes = String(Math.floor(spMinutes / 60)).padStart(2, 0)
+            let seconds = String(Math.floor(spMinutes % 60)).padStart(2, 0)
+            timerLabel.textContent = study ? `${hours}:${minutes >= 60 ? String(Math.floor((spMinutes - divider * 3600) / 60)).padStart(2, 0) : minutes}:${seconds}` : `${minutes}:${seconds}`
+            if (spMinutes === 0) {
+                clearInterval(studyTimer);
+                studyTimeHours = studyHoursValue == '' ? 0 : parseInt(studyHoursValue) * 3600
+                studyTimeMinutes = studyMinutesValue == '' ? 0 + studyTimeHours : parseInt(studyMinutesValue) * 60 + studyTimeHours
+                pauseTimeMinutes = parseInt(pauseMinutesValue) * 60
+                if (studyPause) {
+                    pauseSound.play()
+                    studyTimer = startTimer(0, pauseTimeMinutes, false)
+                }
+                else {
+                    studySound.play()
+                    studyTimer = startTimer(studyTimeHours, studyTimeMinutes, true)
+                }
+            }
+            divider = parseInt(timerLabel.innerText.split(':')[0])
+            spMinutes--
+        }
+        tick()
+        studyTimer = setInterval(tick, 1000);
+        return studyTimer
+    }
+    pauseBtn.addEventListener('click', function () {
+        clearInterval(studyTimer);
+        pauseBtn.style.display = 'none'
+        playBtn.style.display = 'block'
+    })
+    playBtn.addEventListener('click', function () {
+        studyTimeHours = parseInt(timerLabel.innerText.split(':')[0]) * 3600
+        studyTimeMinutes = parseInt(timerLabel.innerText.split(':')[1]) * 60 + studyTimeHours + parseInt(timerLabel.innerText.split(':')[2])
+        pauseTimeMinutes = parseInt(timerLabel.innerText.split(':')[0]) * 60 + parseInt(timerLabel.innerText.split(':')[1])
+        pauseBtn.style.display = 'block'
+        playBtn.style.display = 'none'
+        if (studyPause) studyTimer = startTimer(studyTimeHours, studyTimeMinutes, true)
+        else studyTimer = startTimer(0, pauseTimeMinutes, false)
+    })
+    stopBtn.addEventListener('click', function () {
+        location.reload()
+    })
 })
-pauseBtn.addEventListener('click', function () {
-    clearInterval(studyTimer);
-    pauseBtn.style.display = 'none'
-    playBtn.style.display = 'block'
-})
-playBtn.addEventListener('click', function () {
-    studyTimeHours = parseInt(timerLabel.innerText.split(':')[0]) * 3600
-    studyTimeMinutes = parseInt(timerLabel.innerText.split(':')[1]) * 60 + studyTimeHours + parseInt(timerLabel.innerText.split(':')[2])
-    pauseTimeMinutes = parseInt(timerLabel.innerText.split(':')[0]) * 60 + parseInt(timerLabel.innerText.split(':')[1])
-    pauseBtn.style.display = 'block'
-    playBtn.style.display = 'none'
-    if (studyPause) studyTimer = startTimer(studyTimeHours, studyTimeMinutes, true)
-    else studyTimer = startTimer(0, pauseTimeMinutes, false)
-})
-stopBtn.addEventListener('click', function () {
-    location.reload()
-})
+
 
 
 
